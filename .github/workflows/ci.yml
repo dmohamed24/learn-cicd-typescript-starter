@@ -1,0 +1,50 @@
+name: CI
+
+# when the job is triggered
+on:
+  pull_request:
+    branches: [main]
+
+# the job and its steps
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up ndoe
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: npm run test -- --coverage
+
+  styling:
+    name: Styling
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up ndoe
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run prettier format check
+        run: npm run format:check
+
+      - name: Run ESlint checker
+        run: npm run lint -- --max-warnings=0
